@@ -4,7 +4,7 @@ import librosa.display
 import plotly.graph_objs as go
 
 #print("Current working directory:", os.getcwd())
-filepath = 'test1.mp3'
+filepath = 'samplemp3/15.mp3'
 
 # Load the audio file (preserve native sampling rate by setting sr=None)
 y, sr = librosa.load(filepath, sr=None)  
@@ -31,7 +31,6 @@ print(f"Audio loaded. Duration = {len(y)/sr:.2f} seconds, Sampling Rate = {sr} H
 tempo, beat_times = librosa.beat.beat_track(y=y, sr=sr, units='time', hop_length=512, tightness=100)
 
 
-
 # Output the results
 print("Type of tempo variable:", type(tempo))
 print("Value of tempo:", tempo)
@@ -46,58 +45,58 @@ librosa.display.waveshow(y, sr=sr, alpha=0.5)  # plot waveform amplitude over ti
 #First aproach for plot visualization
 
 
-# Overlay beat markers as vertical lines
-#for bt in beat_times:
+#Overlay beat markers as vertical lines
+# for bt in beat_times:
 #    plt.axvline(x=bt, color='r', linestyle='--', label='Beat' if bt == beat_times[0] else None)
 
 
-# for beat_time in beat_times:
-#     plt.axvline(x=beat_time, color='red', linestyle='--', alpha=0.5, linewidth=0.5)  # Adjust alpha and linewidth
+for beat_time in beat_times:
+    plt.axvline(x=beat_time, color='red', linestyle='--', alpha=0.5, linewidth=0.5)  # Adjust alpha and linewidth
 
 
-# plt.title("Waveform with Detected Beats")
-# plt.xlabel("Time (seconds)")
-# plt.ylabel("Amplitude")
+plt.title("Waveform with Detected Beats")
+plt.xlabel("Time (seconds)")
+plt.ylabel("Amplitude")
 
-# plt.xlim([0, max(beat_times) + 1])  # Adjust x-axis to cover slightly more than the last beat time
+plt.xlim([0, max(beat_times) + 1])  # Adjust x-axis to cover slightly more than the last beat time
 
-# plt.legend()
-# plt.tight_layout()
-# plt.show()
+plt.legend()
+plt.tight_layout()
+plt.show()
 
 
 # Second aproach for plot visualization
 # Prepare data for Plotly
-trace_waveform = go.Scatter(
-    x = [x/sr for x in range(len(y))],  # Convert sample indices to time in seconds
-    y = y,
-    mode = 'lines',
-    name = 'Waveform'
-)
+# trace_waveform = go.Scatter(
+#     x = [x/sr for x in range(len(y))],  # Convert sample indices to time in seconds
+#     y = y,
+#     mode = 'lines',
+#     name = 'Waveform'
+# )
 
-# Adding beat markers as vertical lines
-trace_beats = go.Scatter(
-    x = beat_times,
-    y = [0] * len(beat_times),  # Y positions for markers, adjust if necessary
-    mode = 'markers',
-    marker = dict(
-        size = 10,
-        color = 'red',
-        symbol = 'line-ns-open'
-    ),
-    name = 'Beats'
-)
+# # Adding beat markers as vertical lines
+# trace_beats = go.Scatter(
+#     x = beat_times,
+#     y = [0] * len(beat_times),  # Y positions for markers, adjust if necessary
+#     mode = 'markers',
+#     marker = dict(
+#         size = 10,
+#         color = 'red',
+#         symbol = 'line-ns-open'
+#     ),
+#     name = 'Beats'
+# )
 
-# Define layout
-layout = go.Layout(
-    title = 'Waveform and Beat Detection',
-    xaxis = dict(title = 'Time (seconds)'),
-    yaxis = dict(title = 'Amplitude'),
-    showlegend = True
-)
+# # Define layout
+# layout = go.Layout(
+#     title = 'Waveform and Beat Detection',
+#     xaxis = dict(title = 'Time (seconds)'),
+#     yaxis = dict(title = 'Amplitude'),
+#     showlegend = True
+# )
 
-# Combine traces
-fig = go.Figure(data=[trace_waveform, trace_beats], layout=layout)
+# # Combine traces
+# fig = go.Figure(data=[trace_waveform, trace_beats], layout=layout)
 
-# Show plot
-fig.show()
+# # Show plot
+# fig.show()
