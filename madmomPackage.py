@@ -1,30 +1,39 @@
 import madmom
+import numpy as np
+import plotly.graph_objects as go
+import os
 
-# Specify the path to your audio file
-audio_file = 'loudly.mp3'
+directory = os.getcwd()
+filename = '/loudly.mp3'
+filepath = directory + filename
 
-# Set up the beat tracking processor
-# DBNBeatTracker uses a neural network combined with dynamic Bayesian networks
-processor = madmom.features.beats.DBNBeatTracker(fps=100)
+processor = madmom.features.beats.DBNBeatTrackingProcessor(fps=100)
+act = madmom.features.beats.RNNBeatProcessor()(filepath)
+beats = processor(act)
 
-# Process the audio file to get the beats
-beats = processor(audio_file)
+if len(beats) > 1:
+    intervals = np.diff(beats)
+    avg_interval = np.mean(intervals)
+    bpm = 60.0 / avg_interval
+else:
+    bpm = 0
 
-# Print the detected beats
 print("Detected beats (in seconds):", beats)
+print(f"Estimated BPM: {bpm:.2f}")
 
-# Optional: Plot the results if you want a visual representation
-import matplotlib.pyplot as plt
+signal = madmom.audio.signal.Signal(filepath, num_channels=1, sample_rate=44100)
+sample_rate = signal.sample_rate
+time_axis = np.arange(len(signal)) / sample_rate
 
-# Load the audio file to display the waveform
-signal, sample_rate = madmom.audio.signal.load_wave(audio_file, sample_rate=None)
+fig = go.Figure()
 
-# Plotting the waveform and the beats
-plt.figure(figsize=(10, 4))
-plt.plot(signal)
+fig.add_trace(go.Scatter(x=time_axis, y=signal, mode='lines', name='Audio Waveform'))
+
 for beat in beats:
-    plt.axvline(x=beat * sample_rate, color='red', linestyle='--')
-plt.title('Audio Waveform and Detected Beats')
-plt.xlabel('Samples')
-plt.ylabel('Amplitude')
-plt.show()
+    fig.add_trace(go.Scatter(x=[beat, beat], y=[min(signal), max(signal)], mode='lines', line=dict(color='red', dash='dash'), name='Beat'))
+
+fig.update_layout(title=f'Audio Waveform and Detected Beats (BPM: {bpm:.2f})',
+                  xaxis_title='Time (seconds)', yaxis_title='Amplitude',
+                  template="plotly_white")
+
+fig.show()
