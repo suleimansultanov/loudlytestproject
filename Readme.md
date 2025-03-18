@@ -1,9 +1,7 @@
 BPM Identifier
 
-![GitHub repo size](https://img.shields.io/github/repo-size/your-username/your-repo-name)
-![GitHub stars](https://img.shields.io/github/stars/your-username/your-repo-name?style=social)
-![GitHub forks](https://img.shields.io/github/forks/your-username/your-repo-name?style=social)
-![GitHub license](https://img.shields.io/github/license/your-username/your-repo-name)
+A BPM Identifier works by analyzing the periodicity of beats in an audio signal and estimating a tempo value in Beats Per Minute (BPM). However, when a song has different tempo sections, it presents a challenge because traditional BPM detection algorithms assume a relatively stable tempo throughout the track.
+
 
 Description
 
@@ -22,7 +20,7 @@ Features
 
 Implementation Details
 
-Librosa package Approach
+Librosa package Approach (Simple and only estimated tempo implemented)
 
 [`Librosa`](https://librosa.org/) is a powerful Python library for audio signal processing and analysis. It provides functionalities for feature extraction, tempo estimation, and beat tracking.
 
@@ -31,9 +29,11 @@ Advantages:
 - Built-in tempo estimation and beat tracking functions.
 - Works well for a wide range of audio signals.
 
-Madmom package Approach
+Madmom package Approach(Handling multiple tempos by segments)
 
-[`Madmom`](https://madmom.readthedocs.io/) is a music processing library specifically designed for beat tracking, onset detection, and tempo estimation.
+[`Madmom`](https://madmom.readthedocs.io/) is a music processing library specifically designed for beat tracking, onset detection, and tempo estimation. This solution is more accurate - Instead of computing a single BPM for the entire song, the algorithm divides the audio into small overlapping time windows.
+Each segment is analyzed separately, and a local BPM is calculated.
+The final result can be a BPM curve over time.
 
 Advantages:
 - Optimized for real-time music analysis.
@@ -42,7 +42,7 @@ Advantages:
 
 Tensorflow Approach (TensorFlow CNN-LSTM Model)
 
-This approach leverages Convolutional Neural Networks (CNNs) for feature extraction and *ong Short-Term Memory (LSTM) networks for sequential learning. The model is trained on labeled small (for presenatation only) datasets of music BPM.
+This approach leverages Convolutional Neural Networks (CNNs) for feature extraction and *ong Short-Term Memory (LSTM) networks for sequential learning. The model is trained on labeled small (for presentation only) datasets of music BPM.
 
 Advantages:
 - Can learn complex patterns in audio signals.
@@ -65,22 +65,23 @@ Advantages:
 ### Install Dependencies
 ```bash
 pip install -r requirements.txt
+
 ```
+For librosa package python 3.13.3 was used (Need to install numpy 1.21.4)
 
-### Run BPM Detection
+For Madmom and Tensorflow package python 3.9.7 was used (Need to install numpy 1.23)
 
-- **Librosa Approach:**
-  ```bash
-  python src/bpm_librosa.py --input your_audio_file.wav
-  ```
-- **Madmom Approach:**
-  ```bash
-  python src/bpm_madmom.py --input your_audio_file.wav
-  ```
-- **TensorFlow CNN-LSTM Approach:**
-  ```bash
-  python src/bpm_cnn_lstm.py --input your_audio_file.wav
-  ```
+
+Future Implementations:
+
+-Genre classifier
+
+Develop genre classifier for genre classification
+
+-Real Tim bpm Identification
+
+Implement real time bpm identification for on time bpm calculation
+
 
 Made by Suleiman Sultanov
 

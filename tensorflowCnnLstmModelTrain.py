@@ -11,8 +11,8 @@ from tensorflow.keras.layers import Dense, LSTM, Flatten, Dropout, Conv1D, MaxPo
 X_train, y_train = [], []
 
 directory = os.getcwd()
-audio_dir = directory + '/dataset/audio'
-beats_dir = directory + '/dataset/annotations'
+audio_dir = os.path.join(directory,'dataset/audio')
+beats_dir = os.path.join(directory,'dataset/annotations')
 
 audio_files = sorted(glob.glob(os.path.join(audio_dir, '*.wav')))
 
@@ -102,10 +102,14 @@ model.compile(optimizer='adam',
               metrics=['accuracy'])
 
 # learning
-model.fit(X_train, y_train, epochs=20, batch_size=16, class_weight=class_weights)
+model.fit(X_train, y_train, epochs=42, batch_size=16, class_weight=class_weights)
 
-filename = '/loudly.mp3'
-audio_path = directory + filename
+model_path = "cnn_lstm_bpm_model.h5"
+model.save(model_path)
+
+
+filename = 'loudly.mp3'
+audio_path = os.path.join(directory, filename)
 
 y_test, sr_test = librosa.load(audio_path, sr=22050, duration=30)
 
