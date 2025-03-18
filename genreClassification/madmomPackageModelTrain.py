@@ -9,40 +9,40 @@ from sklearn.model_selection import train_test_split
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, LSTM, Flatten, Dropout, Conv1D, MaxPooling1D, BatchNormalization
 
-# Define dataset paths
+
 dataset_path = "dataset"
 audio_path = os.path.join(dataset_path, "audio")
 annotations_path = os.path.join(dataset_path, "annotations")
 
-# Function to calculate BPM from `.beats` file
+
 def calculate_bpm(beats_file):
     try:
-        beats = np.loadtxt(beats_file)  # Load timestamps from .beats file
+        beats = np.loadtxt(beats_file)  
         if len(beats) < 2:
-            return 0  # Not enough beats to calculate BPM
+            return 0 
         
-        intervals = np.diff(beats)  # Get time differences between beats
-        avg_interval = np.mean(intervals)  # Average beat interval
-        bpm = 60.0 / avg_interval  # Convert interval to BPM
+        intervals = np.diff(beats)  
+        avg_interval = np.mean(intervals)  
+        bpm = 60.0 / avg_interval  
         
         return bpm
     except Exception as e:
         print(f"Error reading {beats_file}: {e}")
-        return 0  # Default BPM if error occurs
+        return 0  
 
-# Function to extract spectrogram using Madmom
+
 def extract_spectrogram(filepath):
     spectrogram_processor = madmom.audio.spectrogram.SpectrogramProcessor(frame_size=2048, fps=100)
     spectrogram = spectrogram_processor(filepath)
     return spectrogram
 
-# Prepare training data
+
 X = []
 y = []
 
 # Iterate over audio files
 for file in os.listdir(audio_path):
-    if file.endswith(".wav"):  # Process only WAV files
+    if file.endswith(".wav"):  
         file_name = os.path.splitext(file)[0]  # Get filename without extension
         audio_file = os.path.join(audio_path, file)
         beats_file = os.path.join(annotations_path, f"{file_name}.beats")
@@ -61,7 +61,7 @@ for file in os.listdir(audio_path):
             # Extract spectrogram
             spectrogram = extract_spectrogram(audio_file)
 
-            # **Fix: Ensure spectrogram has correct 4D shape for CNN input**
+            # Ensure spectrogram has correct 4D shape for CNN input**
             spectrogram = np.expand_dims(spectrogram, axis=-1)  # Add channel dimension (height, width, 1)
 
             X.append(spectrogram)
@@ -79,7 +79,7 @@ X = X.reshape(X.shape[0], X.shape[1], X.shape[2], 1)  # (batch_size, height, wid
 # Split dataset into training and testing
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# **Fix: Adjust CNN-LSTM model to match input shape**
+# Adjust CNN-LSTM model to match input shape**
 def build_model():
     model = Sequential([
         # First CNN layer
@@ -111,7 +111,7 @@ def build_model():
               metrics=['accuracy'])
     return model
 
-# Train or Load Model
+
 model_path = "cnn_lstm_bpm_model.h5"
 if os.path.exists(model_path):
     model = tf.keras.models.load_model(model_path)
@@ -120,11 +120,9 @@ else:
     model = build_model()
     print("Training new model...")
 
-    # Train model
     class_weights = {0: 0.1, 1: 0.9}
     model.fit(X_train, y_train, epochs=30, batch_size=16, class_weight=class_weights)
 
-    # Save trained model
     model.save(model_path)
     print("Model saved!")
 

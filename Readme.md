@@ -54,7 +54,7 @@ Advantages:
 ├── src/
 │   ├── librosaPackage.py  # BPM detection using Librosa
 │   ├── madmomPackage.py   # BPM detection using Madmom
-│   ├── tensorflowCnnLstm.py # BPM detection using Deep Learning (TensorFlow)
+│   ├── tensorflowBpmIdentification.py # BPM detection using Deep Learning (TensorFlow)
 │   └── ...
 ├── README.md  # Documentation
 ├── requirements.txt  # Dependencies
@@ -78,7 +78,7 @@ Future Implementations:
 
 Develop genre classifier for genre classification
 
--Real Tim bpm Identification
+-Real Time bpm Identification
 
 Implement real time bpm identification for on time bpm calculation
 
