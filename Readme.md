@@ -49,16 +49,17 @@ Advantages:
 - More adaptive to diverse music styles.
 - Improves accuracy with large datasets.
 
-Project Structure
-
-├── librosaPackage.py
-├── madmomPackage.py
-├── tensorflowCnnLstm.py
-├── README.md  
-├── loudly.mp3
-└── 
-
-
+## 🏗️ Project Structure
+```
+├── src/
+│   ├── librosaPackage.py  # BPM detection using Librosa
+│   ├── madmomPackage.py   # BPM detection using Madmom
+│   ├── tensorflowCnnLstm.py # BPM detection using Deep Learning (TensorFlow)
+│   └── ...
+├── README.md  # Documentation
+├── requirements.txt  # Dependencies
+└── ...
+```
 ## 🖥️ Usage
 
 ### Install Dependencies
@@ -81,5 +82,5 @@ pip install -r requirements.txt
   python src/bpm_cnn_lstm.py --input your_audio_file.wav
   ```
 
-Made with ❤️ by Suleiman
+Made by Suleiman Sultanov
 
