@@ -2,9 +2,13 @@ import torch
 import librosa
 import numpy as np
 import scipy.signal as signal
+import os
 import matplotlib.pyplot as plt
 from models.beat_rnn import BeatRNN
-
+# Load the trained model
+model = BeatRNN()  # Ensure this matches the trained model architecture
+torch.load(os.path.join(os.getcwd(),"models/beat_madmom_model.pth"), weights_only=False)
+model.eval()  #
 # Function to compute BPM per segment
 def compute_bpm_per_segment(audio_file, segment_length=5.0, sr=22050, hop_length=512):
 
@@ -63,6 +67,8 @@ audio_file = "loudly.mp3"  # Replace with your audio file
 segment_length = 5.0  # Compute BPM per 5-second segment
 
 bpm_values, segment_times = compute_bpm_per_segment(audio_file, segment_length=segment_length)
+valid_bpm_values = [bpm for bpm in bpm_values if bpm > 0]
+
 
 # ===========================
 #  Visualization

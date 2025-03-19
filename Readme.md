@@ -8,8 +8,11 @@ Description
 **BPM Identifier** is a project developed to accurately estimate the Beats Per Minute (BPM) of audio signals. This is crucial in music analysis, DJ applications, and automatic music classification. The project explores three different approaches to BPM detection:
 
 1. **Librosa-based Approach** - Utilizing the `Librosa` package for signal processing and BPM estimation.
-2. **Madmom-based Approach** - Using `madmom`, a specialized library for music analysis, to determine BPM.
+python librosaPackage.py
+2. **Madmom-based Approach** - Using `madmom`, a specialized library for music analysis, to determine BPM. 
+python madmomPackage.py (Pre trained Model)
 3. **Deep Learning Approach** - Implementing a `TensorFlow` model with CNN-LSTM architecture for BPM prediction.
+phython tensorflowBpmIdentification.py
 
 Features
 

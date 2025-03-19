@@ -21,8 +21,3 @@ class BeatRNN(nn.Module):
         out = self.fc(out).squeeze(-1)
         return self.sigmoid(out)
 
-# Load the trained model (ensure "beat_rnn_weights.pth" is saved from training)
-path = os.path.join(os.getcwd(), "models/beat_madmom_model.pth")
-model = BeatRNN()
-torch.load(path,weights_only=False)
-model.eval()  # Set to evaluation mode
